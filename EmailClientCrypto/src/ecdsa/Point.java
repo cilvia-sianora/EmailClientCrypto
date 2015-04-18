@@ -13,26 +13,28 @@ import java.math.BigInteger;
  * @author User
  */
 public class Point {
-    private BigInteger x;
-    private BigInteger y;
-    private BigInteger a;
-    private BigInteger p;
-    private boolean infinity;
+    private BigInteger x;       //The value of x-absis
+    private BigInteger y;       //The value of y-ordinate
+    private BigInteger a;       //A domain parameter of elliptic curve contains this point
+    private BigInteger p;       //A domain parameter of elliptic curve contains this point
+    private boolean infinity;   
     public static Point O = new Point(true);
     
-    //Contructor for 
+    //Default constructor for point
     public Point() {
         this.x = BigInteger.ZERO; 
         this.y = BigInteger.ZERO; 
         this.infinity = false;
     }
     
+    //Contructs a point of infinity named O
     public Point(boolean infinity) {
         this.x = BigInteger.ZERO;
         this.y = BigInteger.ZERO; 
         this.infinity = infinity;
     }
     
+    //Constructs a point with defined parameter
     public Point(BigInteger x, BigInteger y, BigInteger a, BigInteger p) {
         this.x = x;
         this.y = y;
@@ -41,6 +43,7 @@ public class Point {
         this.infinity = false;
     }
     
+    //Check wheter this point is point O
     public boolean isInfinity(){
         return this.infinity;
     }
@@ -65,6 +68,10 @@ public class Point {
         return a;
     }
     
+    public BigInteger getP() {
+        return p;
+    }
+    
     public Point copy(){
         Point r = new Point(this.x, this.y, this.a, this.p);
         return r;
@@ -76,8 +83,9 @@ public class Point {
         return r;
     }
     
+    //Check whether the point q is equal to this point 
     public boolean isEqual(Point q){
-        if ((this.x.compareTo(q.getX()) == 0) && (this.y.compareTo(q.getY()) == 0) && (this.a.compareTo(q.getA()) == 0) && (this.infinity == q.isInfinity())){
+        if ((this.x.compareTo(q.getX()) == 0) && (this.y.compareTo(q.getY()) == 0) && (this.infinity == q.isInfinity())){
             return true;
         } else {
             return false;
@@ -97,7 +105,7 @@ public class Point {
         } else if (this.x.compareTo(q.getX()) == 0){
             return O;
         } else {
-            BigInteger lambda = ((this.y.subtract(q.getY())).multiply((this.x.subtract(q.getX())).modInverse(p))).mod(p);  //Calculate the gradient of line
+            BigInteger lambda = ((this.y.subtract(q.getY())).multiply((this.x.subtract(q.getX())).modInverse(p))).mod(p);  //Calculate the slope of line
             BigInteger _x = (lambda.pow(2).subtract(this.x)).subtract(q.getX());
             BigInteger _y = (lambda.multiply(this.x.subtract(_x))).subtract(this.y) ;
             Point r = new Point(_x.mod(p), _y.mod(p), this.a, this.p);
@@ -155,7 +163,7 @@ public class Point {
         }
     }
     
-    //Returns a string representation of point
+    //Returns hex string representation of point
     public String toHexString(){
         String r = x.toString(16) + y.toString(16);
         return r;

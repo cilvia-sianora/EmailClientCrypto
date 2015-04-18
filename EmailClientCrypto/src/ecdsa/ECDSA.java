@@ -6,8 +6,6 @@
 package ecdsa;
 
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -32,28 +30,18 @@ public class ECDSA {
     public BigInteger getdA() {
         return dA;
     }
-
+    
+    //Generate public key from private key
     public void setdA(BigInteger dA) {
         this.dA = dA;
         QA = G.multiplication(this.dA);
-    }
-    
-    public BigInteger getN(){
-        return n;
-    }
-
-    public void setG(Point G) {
-        this.G = G;
     }
 
     public Point getQA() {
         return QA;
     }
     
-    public ArrayList<Point> getEllipticGroup(){
-        return curve.ellipticGroup;
-    }
-
+    //BigInteger random generator in closed set [1, n]
     private BigInteger randomBigInteger(BigInteger n) {
         Random rnd = new Random();
         int maxNumBitLength = n.bitLength();
@@ -128,7 +116,6 @@ public class ECDSA {
             if ((x1y1.getX().mod(n)).compareTo(r.mod(n)) == 0){
                 return true;
             } else {
-                System.out.println("masuk sini");
                 System.out.println("x1 = " + x1y1.getX().mod(n) + " | " + "r(mod n) = " + r.mod(n));
                 return false;
             }
@@ -137,32 +124,10 @@ public class ECDSA {
         }
     }
     
-    //Returns hex string representation of byte array
-    private String getHexString(byte[] b) throws Exception {
-        String result = "";
-        for (int i=0; i < b.length; i++) {
-          result +=
-                Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
-        }
-        return result;
-    }
-    
-    //Returns byte array of a string
-    private byte[] hexStringToByteArray(String s) {
-        int len = s.length();
-        byte[] data = new byte[len / 2];
-        for (int i = 0; i < len; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                                 + Character.digit(s.charAt(i+1), 16));
-        }
-        return data;
-    }
-    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        // TODO code application logic here
         ECDSA app = new ECDSA();
         BigInteger dA = BigInteger.valueOf(7);
         app.setdA(dA);
@@ -177,5 +142,4 @@ public class ECDSA {
         boolean check = app.checkSignature(m, signature);
         System.out.println("Signature verification: " + check);
     }
-    
 }
