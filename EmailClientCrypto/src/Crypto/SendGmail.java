@@ -11,9 +11,9 @@ import javax.mail.internet.*;
 
 public class SendGmail {
 
-    private static String USER_NAME = "asilvanus5";  // GMail user name (just the part before "@gmail.com")
-    private static String PASSWORD = "ain't venus"; // GMail password
-    private static String RECIPIENT = "andarias.silvanus@gmail.com";
+    private static String USER_NAME = "your_accout";  // GMail user name (just the part before "@gmail.com")
+    private static String PASSWORD = "your_password"; // GMail password
+    private static String RECIPIENT = "recipient@recipient.com";
 
     public static void main(String[] args) {
         String from = USER_NAME;
