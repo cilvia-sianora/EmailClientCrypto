@@ -6,6 +6,7 @@
 
 package Crypto;
 
+import ecdsa.ECDSA;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,13 +23,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableModel;
-
 /**
  *
  * @author Andarias Silvanus
  */
 public class EmailClient extends javax.swing.JFrame {
-
+    ECDSA ecdsa;
     MailReader MR;
     int numColumn = 3;
     String username = "";
@@ -54,6 +54,7 @@ public class EmailClient extends javax.swing.JFrame {
         username = dialog.getUsername();
         password = dialog.getPassword();
         MR = new MailReader(username, password);
+        ecdsa = new ECDSA();
         MsgIdx = MR.getMessages().length-1;
         FillMsgArea(true);
         
@@ -159,6 +160,7 @@ public class EmailClient extends javax.swing.JFrame {
         SPAMBtn = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         PublikBtn = new javax.swing.JButton();
+        KunciBtn = new javax.swing.JButton();
 
         jList1.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -329,6 +331,14 @@ public class EmailClient extends javax.swing.JFrame {
                 PublikBtnActionPerformed(evt);
             }
         });
+        
+        KunciBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        KunciBtn.setText("Kunci Anda");
+        KunciBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PublikBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,7 +353,8 @@ public class EmailClient extends javax.swing.JFrame {
                     .addComponent(DraftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(SPAMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PublikBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(PublikBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(KunciBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(MsgArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -370,6 +381,7 @@ public class EmailClient extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(MsgArea, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(KunciBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(PublikBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -423,7 +435,15 @@ public class EmailClient extends javax.swing.JFrame {
         String kunciPublik;
         kunciPublik = dialog.getPublikKey();
     }//GEN-LAST:event_PublikBtnActionPerformed
-
+    
+    // Tombol Generate Kunci
+    private void KunciBtnActionPerformed(java.awt.event.ActionEvent evt) throws IOException {//GEN-FIRST:event_PublikBtnActionPerformed
+        KunciDialog dialog = new KunciDialog(this);
+        dialog.show();
+        ecdsa.setdA(dialog.getPriKey());
+        ecdsa.setQA(dialog.getPubKey());
+    }//GEN-LAST:event_PublikBtnActionPerformed
+    
     private void FillMsgArea2 (int type) {
         MR.ReadFolder(type);
         MsgIdx = MR.getMessages().length-1;
@@ -568,5 +588,6 @@ public class EmailClient extends javax.swing.JFrame {
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton KunciBtn;
     // End of variables declaration//GEN-END:variables
 }

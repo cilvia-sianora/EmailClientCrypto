@@ -34,14 +34,24 @@ public class ECDSA {
         QA = G.multiplication(this.dA);        
     }
 
-    //Getter fo atribute QA
+    //Getter for attribute QA
     public Point getQA() {
         return QA;
     }
     
-    //Getter fo atribute dA
+    //Setter for attribute QA
+    public void setQA(Point QA){
+        this.QA = QA;
+    }
+    
+    //Getter for attribute dA
     public BigInteger getdA() {
         return dA;
+    }
+    
+    //Setter for attribute dA
+    public void setdA(BigInteger dA){
+        this.dA = dA;
     }
     
     //BigInteger random generator in closed set [1, n]
