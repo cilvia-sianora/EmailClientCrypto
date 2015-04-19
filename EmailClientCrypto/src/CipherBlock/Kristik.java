@@ -5,13 +5,9 @@
  */
 package CipherBlock;
 
-import static java.lang.Math.abs;
-import java.util.Random;
-
-
 /**
  *
- * @author HP
+ * @author 
  */
 public class Kristik {
     /*CLASS ATTRIBUTES*/
@@ -30,8 +26,8 @@ public class Kristik {
         this.blockLen = s.length();
     }
     
-    /*Parsers*/
-    public int[] charToHexa(char c){
+    //Parsing a character into hexadecimal 
+    private int[] charToHexa(char c){
         int[] hex = new int[2];
         String h = Integer.toHexString((int) c);
         if (h.length() == 1){
@@ -42,7 +38,8 @@ public class Kristik {
         return hex;
     }
     
-    public char hexaToChar(int[] i){
+    //Parsing hexadecimal into a character
+    private char hexaToChar(int[] i){
         char c;
         String h = "" + Integer.toHexString(i[0]) + Integer.toHexString(i[1]);
         c = (char) Integer.parseInt(h, 16);
@@ -50,16 +47,16 @@ public class Kristik {
     }
         
     /*Inner function*/
-    public int encInnerFunction(int r, int k){
+    private int encInnerFunction(int r, int k){
         return (r+k)%16;
     }
     
-    public int decInnerFunction(int r, int k){
+    private int decInnerFunction(int r, int k){
         return (r+16-k)%16;
     }
     
     /*Feistel*/
-    public int[] encFeistel(int[] lr, int k){
+    private int[] encFeistel(int[] lr, int k){
         int[] result = new int[2];
         result[0] = lr[1];
         result[1] = encInnerFunction(lr[1], k);
@@ -67,7 +64,7 @@ public class Kristik {
         return result;
     }
     
-    public int[] decFeistel(int[] lr, int k){
+    private int[] decFeistel(int[] lr, int k){
         int[] result = new int[2];
         result[1] = lr[0];
         result[0] = encInnerFunction(lr[0], k);
@@ -76,7 +73,7 @@ public class Kristik {
     }
     
     /*Enkripsi*/
-    public String encryptor(String plainBlock){
+    private String encryptor(String plainBlock){
         int n = blockLen;
         String cipher = "";
         int[] innerKey = new int[n];
@@ -95,7 +92,7 @@ public class Kristik {
     }
     
     /*Dekripsi*/
-    public String decryptor(String cipherBlock){
+    private String decryptor(String cipherBlock){
         int n = blockLen;     //number of iterations
         String plain = "";
         int[] innerKey = new int[n];

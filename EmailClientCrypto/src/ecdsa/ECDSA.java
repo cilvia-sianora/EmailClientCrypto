@@ -18,7 +18,8 @@ public class ECDSA {
     private Curve curve;    //the elliptic curve
     private Point G;        //the generator point, an elliptic curve domain parameter
     private Point QA;    //public key of sender 'A'
-
+    
+    //Default constructor
     public ECDSA() {
         dA = BigInteger.ZERO;
         curve = new Curve("P-256");
@@ -26,19 +27,21 @@ public class ECDSA {
         G = curve.getG();
         QA = new Point();
     }
-
-    public BigInteger getdA() {
-        return dA;
-    }
     
-    //Generate public key from private key
-    public void setdA(BigInteger dA) {
-        this.dA = dA;
-        QA = G.multiplication(this.dA);
+    //Generate private key and public key
+    public void generateKey(){
+        dA = randomBigInteger(n.subtract(BigInteger.ONE));
+        QA = G.multiplication(this.dA);        
     }
 
+    //Getter fo atribute QA
     public Point getQA() {
         return QA;
+    }
+    
+    //Getter fo atribute dA
+    public BigInteger getdA() {
+        return dA;
     }
     
     //BigInteger random generator in closed set [1, n]
@@ -129,10 +132,9 @@ public class ECDSA {
      */
     public static void main(String[] args) throws Exception {
         ECDSA app = new ECDSA();
-        BigInteger dA = BigInteger.valueOf(7);
-        app.setdA(dA);
+        app.generateKey();
         Point QA = app.getQA();
-        System.out.println("Private key of sender 'A': " + dA);
+        System.out.println("Private key of sender 'A': " + app.getdA());
         System.out.println("Public key of sender 'A': QA(" + QA.getX() + "," + QA.getY() + ")");
         String m = "";
         String signature = app.signingMessage(m);
