@@ -15,7 +15,7 @@ import javax.swing.*;
  * @author Andarias Silvanus
  */
 public class KunciPrivatDialog extends javax.swing.JDialog {
-    private BigInteger privateKey;
+    private BigInteger privateKey = BigInteger.ZERO;
     /**
      * Creates new form KunciPrivatDialog
      */
@@ -44,7 +44,6 @@ public class KunciPrivatDialog extends javax.swing.JDialog {
     }
     
     public BigInteger getPrivatKey() {
-        System.out.println(privateKey);
         return privateKey;
     }
     
