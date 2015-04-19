@@ -78,8 +78,8 @@ public class ECDSA {
     //Returns signature in point representation
     private Point signatureGeneration(String m){ 
         BigInteger e, k, r, s = BigInteger.ZERO;
-        // e = HASH(m)
-        e = new BigInteger("7e16b5527c77ea58bac36dddda6f5b444f32e81b", 16);
+        SHA1 hash = new SHA1();
+        e = new BigInteger(hash.hashing(m), 16);
         Point x1y1 = new Point();
         Random rand = new Random();
         do{
@@ -109,8 +109,8 @@ public class ECDSA {
             (r.compareTo(n.subtract(BigInteger.ONE)) <= 0) && 
             (s.compareTo(BigInteger.ONE) >= 0) && 
             (s.compareTo(n.subtract(BigInteger.ONE)) <= 0)){
-            // e = HASH(m)
-            e = new BigInteger("7e16b5527c77ea58bac36dddda6f5b444f32e81b", 16);
+            SHA1 hash = new SHA1();
+            e = new BigInteger(hash.hashing(m), 16);
             w = s.modInverse(n);
             u1 = (e.multiply(w)).mod(n);
             u2 = (r.multiply(w)).mod(n);
@@ -125,23 +125,5 @@ public class ECDSA {
         } else {
             return false;
         }
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws Exception {
-        ECDSA app = new ECDSA();
-        app.generateKey();
-        Point QA = app.getQA();
-        System.out.println("Private key of sender 'A': " + app.getdA());
-        System.out.println("Public key of sender 'A': QA(" + QA.getX() + "," + QA.getY() + ")");
-        String m = "";
-        String signature = app.signingMessage(m);
-        System.out.println("Message: " + m);
-        System.out.println("Signature: " + signature);
-        System.out.println("length: " + signature.length());
-        boolean check = app.checkSignature(m, signature);
-        System.out.println("Signature verification: " + check);
     }
 }

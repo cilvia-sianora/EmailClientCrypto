@@ -6,6 +6,8 @@
 
 package Crypto;
 
+import ecdsa.SHA1;
+
 /**
  *
  * @author Anggi
