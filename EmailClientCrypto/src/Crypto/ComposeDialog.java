@@ -60,6 +60,8 @@ public class ComposeDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         ContentArea = new javax.swing.JTextArea();
         ComposeBtn = new javax.swing.JButton();
+        EncryptBox = new javax.swing.JCheckBox();
+        DigitalSignBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -84,15 +86,16 @@ public class ComposeDialog extends javax.swing.JDialog {
             }
         });
 
+        EncryptBox.setText("Enkripsi Pesan");
+
+        DigitalSignBox.setText("Pasang Tanda Tangan Digital");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 32, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -105,7 +108,15 @@ public class ComposeDialog extends javax.swing.JDialog {
                             .addComponent(ToField)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 25, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(EncryptBox)
+                                .addGap(18, 18, 18)
+                                .addComponent(DigitalSignBox))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
@@ -124,8 +135,12 @@ public class ComposeDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EncryptBox)
+                    .addComponent(DigitalSignBox))
+                .addGap(18, 18, 18)
                 .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -142,6 +157,8 @@ public class ComposeDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ComposeBtn;
     private javax.swing.JTextArea ContentArea;
+    private javax.swing.JCheckBox DigitalSignBox;
+    private javax.swing.JCheckBox EncryptBox;
     private javax.swing.JTextField SubjectField;
     private javax.swing.JTextField ToField;
     private javax.swing.JLabel jLabel1;
