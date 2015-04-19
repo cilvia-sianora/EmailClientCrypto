@@ -1,1 +1,3 @@
 /EmailClientCrypto/build/
+/EmailClientCrypto/nbproject/private/
+*.properties
