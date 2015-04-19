@@ -132,12 +132,15 @@ public class ECDSA {
             Point x1y1 = new Point();
             x1y1 = (G.multiplication(u1)).addition(QA.multiplication(u2));
             if ((x1y1.getX().mod(n)).compareTo(r.mod(n)) == 0){
+                System.out.println("true");
                 return true;
             } else {
                 System.out.println("x1 = " + x1y1.getX().mod(n) + " | " + "r(mod n) = " + r.mod(n));
+                System.out.println("false");
                 return false;
             }
         } else {
+                System.out.println("false");
             return false;
         }
     }

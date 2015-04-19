@@ -55,9 +55,10 @@ public class SendGmail {
             
             message.setSubject(subject);
             if (KEY != ""){
+                System.out.println(KEY);
                 Kristik cipher = new Kristik();
                 cipher.setKey(KEY);
-                body = cipher.encECB(body);
+                body = cipher.encCBC(body);
             }
             message.setText(body);
             Transport transport = session.getTransport("smtp");

@@ -187,7 +187,7 @@ public class ComposeDialog extends javax.swing.JDialog {
             Logger.getLogger(ComposeDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_DigitalSignBoxActionPerformed
-    public String key;
+    public String key="";
     private void EncryptBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncryptBoxActionPerformed
         // TODO add your handling code here:
         KunciEnkripsiDialog dialog = new KunciEnkripsiDialog(this);

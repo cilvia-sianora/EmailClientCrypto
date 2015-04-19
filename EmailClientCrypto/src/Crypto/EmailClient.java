@@ -396,11 +396,7 @@ public class EmailClient extends javax.swing.JFrame {
         signature = signature.substring(2);
         System.out.println(signature);
         boolean verify = false;
-        try{
-            verify = ecdsa.checkSignature(message, signature);
-        } catch(Exception e){
-            verify = false;
-        }
+        verify = ecdsa.checkSignature(message, signature);
         System.out.println(verify);
         if (verify){
             JOptionPane.showMessageDialog(this,
