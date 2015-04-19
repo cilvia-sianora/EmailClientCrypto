@@ -119,11 +119,11 @@ public class KunciDialog extends javax.swing.JDialog {
         KunciPrivatLabel = new javax.swing.JLabel();
         KunciPublikXLabel = new javax.swing.JLabel();
         KunciPrivatField = new javax.swing.JTextField();
-        KunciPublikXField = new javax.swing.JPasswordField();
         BangkitkanBtn = new javax.swing.JButton();
-        KunciPublikYField = new javax.swing.JPasswordField();
         KunciPublikYLabel = new javax.swing.JLabel();
         CloseBtn = new javax.swing.JButton();
+        KunciPublikXField = new javax.swing.JTextField();
+        KunciPublikYField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -138,8 +138,6 @@ public class KunciDialog extends javax.swing.JDialog {
 
         KunciPrivatField.setEditable(false);
 
-        KunciPublikXField.setEditable(false);
-
         BangkitkanBtn.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         BangkitkanBtn.setText("Bangkitkan");
         BangkitkanBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -147,8 +145,6 @@ public class KunciDialog extends javax.swing.JDialog {
                 BangkitkanBtnActionPerformed(evt);
             }
         });
-
-        KunciPublikYField.setEditable(false);
 
         KunciPublikYLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         KunciPublikYLabel.setText("Kunci Publik Y");
@@ -160,6 +156,10 @@ public class KunciDialog extends javax.swing.JDialog {
                 CloseBtnActionPerformed(evt);
             }
         });
+
+        KunciPublikXField.setEditable(false);
+
+        KunciPublikYField.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -175,10 +175,10 @@ public class KunciDialog extends javax.swing.JDialog {
                                 .addComponent(KunciPublikXLabel, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addComponent(KunciPublikYLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(KunciPrivatField)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(KunciPublikXField)
-                            .addComponent(KunciPublikYField, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(KunciPrivatField, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(KunciPublikYField))
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -204,16 +204,16 @@ public class KunciDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(KunciPublikXLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(KunciPublikXField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(KunciPublikXField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(KunciPublikYField, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(KunciPublikYLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(KunciPublikYLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(KunciPublikYField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BangkitkanBtn)
                     .addComponent(CloseBtn))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -246,9 +246,9 @@ public class KunciDialog extends javax.swing.JDialog {
     private javax.swing.JButton CloseBtn;
     private javax.swing.JTextField KunciPrivatField;
     private javax.swing.JLabel KunciPrivatLabel;
-    private javax.swing.JPasswordField KunciPublikXField;
+    private javax.swing.JTextField KunciPublikXField;
     private javax.swing.JLabel KunciPublikXLabel;
-    private javax.swing.JPasswordField KunciPublikYField;
+    private javax.swing.JTextField KunciPublikYField;
     private javax.swing.JLabel KunciPublikYLabel;
     private javax.swing.JLabel TitleLabel;
     // End of variables declaration//GEN-END:variables

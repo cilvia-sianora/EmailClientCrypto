@@ -34,6 +34,7 @@
                   <Component id="jButton6" alignment="0" max="32767" attributes="0"/>
                   <Component id="PublikBtn" max="32767" attributes="0"/>
                   <Component id="DekripsiBtn" max="32767" attributes="0"/>
+                  <Component id="KunciBtn" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -69,6 +70,8 @@
                       <Component id="PublikBtn" min="-2" pref="33" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="DekripsiBtn" min="-2" pref="32" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="KunciBtn" min="-2" pref="32" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jButton6" min="-2" pref="41" max="-2" attributes="0"/>
                   </Group>
@@ -195,6 +198,17 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Dekripsi Pesan"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="KunciBtn">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="12" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Kunci Anda"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="KunciBtnActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
