@@ -1,25 +1,18 @@
 package Crypto;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import javax.swing.*;
 
 /**
  *
  * @author Andarias Silvanus
  */
-public class KunciEnkripsiDialog extends javax.swing.JDialog {
+public class KunciDekripsiDialog extends javax.swing.JDialog {
     private String key = "";
     /**
      * Creates new form KunciPrivatDialog
-     */    
-    public KunciEnkripsiDialog(Dialog parent) {
+     */
+    public KunciDekripsiDialog(Frame parent) {
         super(parent, true);
         setLocation (320,100);
         setTitle("Input String Kunci");

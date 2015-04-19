@@ -6,25 +6,15 @@
 
 package Crypto;
 
+import CipherBlock.Kristik;
 import ecdsa.ECDSA;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.BodyPart;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.event.TableColumnModelEvent;
-import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -258,9 +248,19 @@ public class EmailClient extends javax.swing.JFrame {
 
         PublikBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         PublikBtn.setText("Verifikasi Email");
+        PublikBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PublikBtnActionPerformed(evt);
+            }
+        });
 
         DekripsiBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         DekripsiBtn.setText("Dekripsi Pesan");
+        DekripsiBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DekripsiBtnActionPerformed(evt);
+            }
+        });
 
         KunciBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         KunciBtn.setText("Kunci Anda");
@@ -362,13 +362,7 @@ public class EmailClient extends javax.swing.JFrame {
         SG.KEY = dialog.key;
         SG.sendFromGMail(username, password, to, subject, content);
     }//GEN-LAST:event_KirimBtnActionPerformed
-
-    // Tombol Verifikasi Email
-    private void PublikBtnActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        KunciPublikDialog dialog = new KunciPublikDialog(this);
-        dialog.show();
-    }                                         
-    
+                                    
     // Tombol Generate Kunci
     private void KunciBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KunciBtnActionPerformed
         try {
@@ -380,6 +374,46 @@ public class EmailClient extends javax.swing.JFrame {
             Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_KunciBtnActionPerformed
+
+    private void DekripsiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DekripsiBtnActionPerformed
+        // TODO add your handling code here:
+        KunciDekripsiDialog dialog = new KunciDekripsiDialog(this);
+        dialog.show();
+        Kristik decipher = new Kristik();
+        decipher.setKey(dialog.getKey());
+        MsgArea.setText(decipher.decECB(MsgArea.getText()));
+    }//GEN-LAST:event_DekripsiBtnActionPerformed
+
+    private void PublikBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PublikBtnActionPerformed
+        // TODO add your handling code here:
+        KunciPublikDialog dialog = new KunciPublikDialog(this);
+        dialog.show();
+        ecdsa.setQA(dialog.getPublikKey());
+        String signature = MsgArea.getText().substring(MsgArea.getText().indexOf("<<"));
+        String message = MsgArea.getText().substring(0, MsgArea.getText().indexOf("<<")-4);
+        System.out.println(message);
+        System.out.println(signature);
+        signature = signature.substring(2);
+        System.out.println(signature);
+        boolean verify = false;
+        try{
+            verify = ecdsa.checkSignature(message, signature);
+        } catch(Exception e){
+            verify = false;
+        }
+        System.out.println(verify);
+        if (verify){
+            JOptionPane.showMessageDialog(this,
+                    "Pesan valid",
+                    "Missing Setting(s)", JOptionPane.PLAIN_MESSAGE);
+            return;
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Pesan tidak  valid",
+                    "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    }//GEN-LAST:event_PublikBtnActionPerformed
     
     private void FillMsgArea2 (int type) {
         MR.ReadFolder(type);
