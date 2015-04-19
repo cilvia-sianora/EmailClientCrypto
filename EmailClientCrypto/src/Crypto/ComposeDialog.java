@@ -14,9 +14,21 @@ public class ComposeDialog extends javax.swing.JDialog {
      * Creates new form ComposeDialog
      */
     public ComposeDialog(Frame parent) {
-        super(parent);
+        super(parent, true);
         setLocation (320,100);
+        setTitle("Compose Email");
         initComponents();
+    }
+    
+    private void actionConnect() {
+        if (ToField.getText().trim().length() < 1){
+            JOptionPane.showMessageDialog(this,
+                    "Mohon isikan alamat penerima email",
+                    "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Close dialog.
+        dispose();
     }
     
     public String getRecipient() {
@@ -120,7 +132,7 @@ public class ComposeDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ComposeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComposeBtnActionPerformed
-        dispose();
+        actionConnect();
     }//GEN-LAST:event_ComposeBtnActionPerformed
 
     /**

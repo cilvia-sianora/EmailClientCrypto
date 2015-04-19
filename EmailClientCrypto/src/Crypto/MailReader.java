@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.Flags.Flag;
+import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
  
 public class MailReader
@@ -15,6 +16,9 @@ public class MailReader
     Folder inbox;
     private Message messages[];
     String username, password;
+    //Vector SenderAdr = new Vector();
+    Vector SenderName = new Vector();
+    Vector ReceiverName = new Vector();
     
     //Constructor of the calss.
     public MailReader(String user, String pass)
@@ -38,11 +42,12 @@ public class MailReader
 
            /*Open the inbox using store.*/
            inbox.open(Folder.READ_ONLY);
-
+           
            /*  Get the messages which is unread in the Inbox*/
 //           messages = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
            messages = inbox.getMessages();
-
+//           GetSenderName();
+           GetSenderName100();
            /* Use a suitable FetchProfile    */
            FetchProfile fp = new FetchProfile();
            fp.add(FetchProfile.Item.ENVELOPE);
@@ -73,6 +78,44 @@ public class MailReader
        }
     }
     
+    public void GetSenderName () throws MessagingException {
+        for (int i=0; i<messages.length; i++) {
+            Address[] from = messages[i].getFrom();
+//            String FromName = from.toString();
+            String FromName = from == null ? null : ((InternetAddress) from[0]).getAddress();
+//            System.out.println("sender: "+FromName);
+            SenderName.addElement(FromName);
+        }
+    }
+    
+    public void GetSenderName100 () throws MessagingException {
+        int cnt = messages.length-1;
+        int i =0;
+        while ((i<100) && (i<cnt+1)) {
+            Address[] from = messages[cnt].getFrom();
+//            String FromName = from.toString();
+            String FromName = from == null ? null : ((InternetAddress) from[0]).getAddress();
+//            System.out.println("sender: "+FromName);
+            SenderName.addElement(FromName);
+            cnt--;
+            i++;
+        }
+    }
+    
+    public void GetReceiverName100 () throws MessagingException {
+        int cnt = messages.length-1;
+        int i =0;
+        while ((i<100) && (i<cnt+1)) {
+            Address[] from = messages[cnt].getAllRecipients();
+//            String FromName = from.toString();
+            String FromName = from == null ? null : ((InternetAddress) from[0]).getAddress();
+//            System.out.println("sender: "+FromName);
+            ReceiverName.addElement(FromName);
+            cnt--;
+            i++;
+        }
+    }
+    
     public void ReadFolder(int type) {
         String folderName = "";
         if (type==1)
@@ -90,38 +133,46 @@ public class MailReader
        props.put("mail.imaps.ssl.trust", "*");
        try
        {
-           /*  Create the session and get the store for read the mail. */
-           Session session = Session.getDefaultInstance(props, null);
-           Store store = session.getStore("imaps");
-           store.connect("imap.gmail.com",username, password);
+            /*  Create the session and get the store for read the mail. */
+            Session session = Session.getDefaultInstance(props, null);
+            Store store = session.getStore("imaps");
+            store.connect("imap.gmail.com",username, password);
 
-           /*  Mention the folder name which you want to read. */
-           inbox = store.getFolder(folderName);
+            /*  Mention the folder name which you want to read. */
+            inbox = store.getFolder(folderName);
 
-           /*Open the inbox using store.*/
-           inbox.open(Folder.READ_ONLY);
+            /*Open the inbox using store.*/
+            inbox.open(Folder.READ_ONLY);
 
-           /*  Get the messages which is unread in the Inbox*/
-           //messages = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
-           messages = inbox.getMessages();
+            /*  Get the messages which is unread in the Inbox*/
+            //messages = inbox.search(new FlagTerm(new Flags(Flag.SEEN), false));
+            messages = inbox.getMessages();
+            if (type!=2) {
+                SenderName.clear();
+                //GetSenderName();
+                GetSenderName100();
+            }
+            else {
+                ReceiverName.clear();
+                GetReceiverName100();
+            }
+            /* Use a suitable FetchProfile    */
+            FetchProfile fp = new FetchProfile();
+            fp.add(FetchProfile.Item.ENVELOPE);
+            fp.add(FetchProfile.Item.CONTENT_INFO);
+            inbox.fetch(messages, fp);
 
-           /* Use a suitable FetchProfile    */
-           FetchProfile fp = new FetchProfile();
-           fp.add(FetchProfile.Item.ENVELOPE);
-           fp.add(FetchProfile.Item.CONTENT_INFO);
-           inbox.fetch(messages, fp);
-
-           try
-           {
-//               printAllMessages(messages);
-               inbox.close(true);
-               store.close();
-           }
-           catch (Exception ex)
-           {
-               System.out.println("Exception arise at the time of read mail");
-               ex.printStackTrace();
-           }
+            try
+            {
+ //               printAllMessages(messages);
+                inbox.close(true);
+                store.close();
+            }
+            catch (Exception ex)
+            {
+                System.out.println("Exception arise at the time of read mail");
+                ex.printStackTrace();
+            }
        }
        catch (NoSuchProviderException e)
        {
@@ -145,6 +196,7 @@ public class MailReader
        {
            System.out.println("MESSAGE #" + (i + 1) + ":");
            System.out.println(msgs[i].getSubject());
+           
            //printEnvelope(msgs[i]);
        }
     }

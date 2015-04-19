@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,7 +46,7 @@ public class EmailClient extends javax.swing.JFrame {
         password = dialog.getPassword();
         MR = new MailReader(username, password);
         MsgIdx = MR.getMessages().length-1;
-        FillMsgArea();
+        FillMsgArea(true);
     }
 
     /**
@@ -298,7 +300,6 @@ public class EmailClient extends javax.swing.JFrame {
         recipient = dialog.getRecipient();
         subject = dialog.getSubject();
         content = dialog.getContent();
-        System.out.println(content);
         SendGmail SG = new SendGmail();
         String[] to = {recipient};
         SG.sendFromGMail(username, password, to, subject, content);
@@ -313,7 +314,10 @@ public class EmailClient extends javax.swing.JFrame {
         else
             ((DefaultTableModel)MsgTable.getModel()).setRowCount(100);
         try {
-            FillMsgArea();
+            if (type==2)
+                FillMsgArea(false);
+            else
+                FillMsgArea(true);
         }
         catch (MessagingException e) {
         }
@@ -321,12 +325,18 @@ public class EmailClient extends javax.swing.JFrame {
         }
     }
     
-    private void FillMsgArea () throws MessagingException, IOException {
+    private void FillMsgArea (boolean tipe) throws MessagingException, IOException {
+        // tipe = false u/ sent mail
+        // tipe = true u/ inbox, draft, SPAM
         int row = 0;
         while (row<100) {
             for (int j=0; j<3; j++) {
                 if (j==0)
-                    MsgTable.setValueAt("anda", row, j);
+//                    MsgTable.setValueAt(MR.SenderName.get(MsgIdx), row, j);
+                    if (tipe)
+                        MsgTable.setValueAt(MR.SenderName.get(row), row, j);
+                    else
+                        MsgTable.setValueAt(MR.ReceiverName.get(row), row, j);
                 else if (j==1)
                     MsgTable.setValueAt(MR.getMessages()[MsgIdx].getSubject(), row, j);
                 else if (j==2)
@@ -377,6 +387,15 @@ public class EmailClient extends javax.swing.JFrame {
                     Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 EC.setVisible(true);
+                EC.MsgTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+                    public void valueChanged(ListSelectionEvent event) {
+                        // do some actions here, for example
+                        // print first column value from selected row
+//                        System.out.println(EC.MsgTable.getValueAt(EC.MsgTable.getSelectedRow(), 0).toString());
+//                        EC.MsgArea.setText("");
+                        
+                    }
+                });
             }
         });
     }
