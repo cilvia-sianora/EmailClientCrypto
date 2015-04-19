@@ -2,6 +2,7 @@ package Crypto;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigInteger;
 import javax.swing.*;
 
 /**
@@ -9,7 +10,7 @@ import javax.swing.*;
  * @author Andarias Silvanus
  */
 public class KunciPublikDialog extends javax.swing.JDialog {
-
+    private ecdsa.Point pubKey;
     /**
      * Creates new form KunciPublikDialog
      */
@@ -18,21 +19,24 @@ public class KunciPublikDialog extends javax.swing.JDialog {
         setLocation (320,100);
         setTitle("Verifikasi Email");
         initComponents();
+        pubKey = new ecdsa.Point();
     }
 
     private void actionConnect() {
-        if (PublikField.getText().trim().length() < 1){
+        if ((PublikXField.getText().trim().length() < 1) || (PublikYField.getText().trim().length() < 1)){
             JOptionPane.showMessageDialog(this,
                     "Mohon isikan kunci publik",
                     "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        pubKey.setX(new BigInteger(PublikXField.getText()));
+        pubKey.setY(new BigInteger(PublikYField.getText()));
         // Close dialog.
         dispose();
     }
     
-    public String getPublikKey() {
-        return PublikField.getText();
+    public ecdsa.Point getPublikKey() {
+        return pubKey;
     }
     
     /**
@@ -44,9 +48,12 @@ public class KunciPublikDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PublikField = new javax.swing.JTextField();
+        PublikXField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         SubmitBtn = new javax.swing.JButton();
+        PublikYField = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,18 +68,31 @@ public class KunciPublikDialog extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel2.setText("X");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel3.setText("Y");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(SubmitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel1)
-                        .addComponent(PublikField, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(SubmitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addGap(29, 29, 29)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(PublikYField, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(PublikXField, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -80,10 +100,16 @@ public class KunciPublikDialog extends javax.swing.JDialog {
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(PublikField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PublikXField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PublikYField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(SubmitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -98,8 +124,11 @@ public class KunciPublikDialog extends javax.swing.JDialog {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField PublikField;
+    private javax.swing.JTextField PublikXField;
+    private javax.swing.JTextField PublikYField;
     private javax.swing.JButton SubmitBtn;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

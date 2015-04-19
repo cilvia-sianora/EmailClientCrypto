@@ -465,8 +465,6 @@ public class EmailClient extends javax.swing.JFrame {
     private void PublikBtnActionPerformed(java.awt.event.ActionEvent evt) {                                          
         KunciPublikDialog dialog = new KunciPublikDialog(this);
         dialog.show();
-        String kunciPublik;
-        kunciPublik = dialog.getPublikKey();
     }                                         
     
     // Tombol Generate Kunci
