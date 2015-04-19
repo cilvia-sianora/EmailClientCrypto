@@ -151,6 +151,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Pasang Tanda Tangan Digital"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DigitalSignBoxActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

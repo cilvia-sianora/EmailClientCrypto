@@ -89,6 +89,11 @@ public class ComposeDialog extends javax.swing.JDialog {
         EncryptBox.setText("Enkripsi Pesan");
 
         DigitalSignBox.setText("Pasang Tanda Tangan Digital");
+        DigitalSignBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DigitalSignBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,6 +155,19 @@ public class ComposeDialog extends javax.swing.JDialog {
         actionConnect();
     }//GEN-LAST:event_ComposeBtnActionPerformed
 
+    String bigInteger;
+    
+    // CheckBox Digital Signature
+    private void DigitalSignBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DigitalSignBoxActionPerformed
+        KunciPrivatDialog dialog = new KunciPrivatDialog(this);
+        dialog.show();
+        bigInteger = dialog.getPrivatKey();
+    }//GEN-LAST:event_DigitalSignBoxActionPerformed
+
+    public String getPrivat() {
+        return bigInteger;
+    }
+    
     /**
      * @param args the command line arguments
      */
