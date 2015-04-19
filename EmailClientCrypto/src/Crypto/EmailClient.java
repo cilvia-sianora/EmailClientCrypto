@@ -9,7 +9,18 @@ package Crypto;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.BodyPart;
+import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableColumnModelEvent;
+import javax.swing.event.TableColumnModelListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,7 +55,88 @@ public class EmailClient extends javax.swing.JFrame {
         password = dialog.getPassword();
         MR = new MailReader(username, password);
         MsgIdx = MR.getMessages().length-1;
-        FillMsgArea();
+        FillMsgArea(true);
+        
+        MsgTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public String toString(Message message) throws MessagingException, IOException {
+                Object content=message.getContent();
+                if (content instanceof MimeMultipart) {
+                    MimeMultipart multipart=(MimeMultipart)content;
+                    if (multipart.getCount() > 0) {
+                      BodyPart part=multipart.getBodyPart(0);
+                      content=part.getContent();
+                    }
+                }
+                if (content != null) {
+                    return content.toString();
+                }
+                else
+                    return "Selain text, isi pesan tidak dapat ditampilkan";
+            }
+            public void valueChanged(ListSelectionEvent e) {
+                int row = MsgTable.getSelectedRow();
+                MsgArea.setText("");
+                try {
+//                    if(MR.getMessages()[row-1] instanceof MimeMessage)
+//                    {
+//                        MimeMessage m = (MimeMessage)MR.getMessages()[row-1];
+//                        Object contentObject = m.getContent();
+//                        if(contentObject instanceof Multipart)
+//                        {
+//                            BodyPart clearTextPart = null;
+//                            BodyPart htmlTextPart = null;
+//                            Multipart content = (Multipart)contentObject;
+//                            int count = content.getCount();
+//                            for(int i=0; i<count; i++)
+//                            {
+//                                BodyPart part =  content.getBodyPart(i);
+//                                if(part.isMimeType("text/plain"))
+//                                {
+//                                    clearTextPart = part;
+//                                    break;
+//                                }
+//                                else if(part.isMimeType("text/html"))
+//                                {
+//                                    htmlTextPart = part;
+//                                }
+//                            }
+//                            if(clearTextPart!=null)
+//                            {
+//                                result = (String) clearTextPart.getContent();
+//                            }
+//                            else if (htmlTextPart!=null)
+//                            {
+//                                String html = (String) htmlTextPart.getContent();
+//                                result = Jsoup.parse(html).text();
+//                            }
+//
+//                        }
+//                         else if (contentObject instanceof String) // a simple text message
+//                        {
+//                            result = (String) contentObject;
+//                        }
+//                        else // not a mime message
+//                        {
+//                            logger.log(Level.WARNING,"notme part or multipart {0}",message.toString());
+//                            result = null;
+//                        }
+//                    }
+                    String content = toString(MR.getMessages()[row-1]);
+                    MsgArea.setText(content);
+//                    if (MR.getMessages()[row-1].getContentType() == "TEXT/PLAIN; charset=UTF-8") {
+//                        String content = toString(MR.getMessages()[row-1]);
+//                        MsgArea.setText(content);
+//                    }
+//                    else
+//                        MsgArea.setText("Selain text, isi pesan tidak dapat ditampilkan");
+//                    System.out.println(MR.getMessages()[row-1].getContentType());
+                } catch (MessagingException ex) {
+                    Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
     }
 
     /**
@@ -56,15 +148,24 @@ public class EmailClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
         jScrollPane1 = new javax.swing.JScrollPane();
         MsgTable = new javax.swing.JTable();
-        MsgArea = new java.awt.TextArea();
         KirimBtn = new javax.swing.JButton();
         InboxBtn = new javax.swing.JButton();
         SentBtn = new javax.swing.JButton();
         DraftBtn = new javax.swing.JButton();
         SPAMBtn = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        PublikBtn = new javax.swing.JButton();
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -221,6 +322,14 @@ public class EmailClient extends javax.swing.JFrame {
             }
         });
 
+        PublikBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        PublikBtn.setText("Verifikasi Email");
+        PublikBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PublikBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,7 +342,8 @@ public class EmailClient extends javax.swing.JFrame {
                     .addComponent(SentBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(DraftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(SPAMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PublikBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(MsgArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -259,7 +369,10 @@ public class EmailClient extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(MsgArea, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PublikBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
 
@@ -298,11 +411,18 @@ public class EmailClient extends javax.swing.JFrame {
         recipient = dialog.getRecipient();
         subject = dialog.getSubject();
         content = dialog.getContent();
-        System.out.println(content);
         SendGmail SG = new SendGmail();
         String[] to = {recipient};
         SG.sendFromGMail(username, password, to, subject, content);
     }//GEN-LAST:event_KirimBtnActionPerformed
+
+    // Tombol Verifikasi Email
+    private void PublikBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PublikBtnActionPerformed
+        KunciPublikDialog dialog = new KunciPublikDialog(this);
+        dialog.show();
+        String kunciPublik;
+        kunciPublik = dialog.getPublikKey();
+    }//GEN-LAST:event_PublikBtnActionPerformed
 
     private void FillMsgArea2 (int type) {
         MR.ReadFolder(type);
@@ -313,7 +433,10 @@ public class EmailClient extends javax.swing.JFrame {
         else
             ((DefaultTableModel)MsgTable.getModel()).setRowCount(100);
         try {
-            FillMsgArea();
+            if (type==2)
+                FillMsgArea(false);
+            else
+                FillMsgArea(true);
         }
         catch (MessagingException e) {
         }
@@ -321,12 +444,18 @@ public class EmailClient extends javax.swing.JFrame {
         }
     }
     
-    private void FillMsgArea () throws MessagingException, IOException {
+    private void FillMsgArea (boolean tipe) throws MessagingException, IOException {
+        // tipe = false u/ sent mail
+        // tipe = true u/ inbox, draft, SPAM
         int row = 0;
         while (row<100) {
             for (int j=0; j<3; j++) {
                 if (j==0)
-                    MsgTable.setValueAt("anda", row, j);
+//                    MsgTable.setValueAt(MR.SenderName.get(MsgIdx), row, j);
+                    if (tipe)
+                        MsgTable.setValueAt(MR.SenderName.get(row), row, j);
+                    else
+                        MsgTable.setValueAt(MR.ReceiverName.get(row), row, j);
                 else if (j==1)
                     MsgTable.setValueAt(MR.getMessages()[MsgIdx].getSubject(), row, j);
                 else if (j==2)
@@ -377,6 +506,51 @@ public class EmailClient extends javax.swing.JFrame {
                     Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 EC.setVisible(true);
+                
+//                EC.MsgTable.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+//                    public void valueChanged(ListSelectionEvent event) {
+//                        // do some actions here, for example
+//                        // print first column value from selected row
+//                        System.out.println(EC.MsgTable.getValueAt(EC.MsgTable.getSelectedRow(), 0).toString());
+//                        EC.MsgArea.setText("");
+//                        
+//                    }
+//                });
+                
+//                TableColumnModelListener tableColumnModelListener;
+//                tableColumnModelListener = new TableColumnModelListener() {
+//                    @Override
+//                    public void columnSelectionChanged(ListSelectionEvent e) {
+//                        SwingUtilities.invokeLater(new Runnable() {
+//                            @Override
+//                            public void run() {
+////                                System.out.println(EC.MsgTable.getSelectedColumn()); // this is correct
+////                                System.out.println(EC.MsgTable.getSelectedRow());  // -1 on first click in JTable
+//                                EC.MsgArea.setText("");
+//                            }
+//                        });
+//                    }
+//
+//                    @Override
+//                    public void columnAdded(TableColumnModelEvent e) {
+//                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                    }
+//
+//                    @Override
+//                    public void columnRemoved(TableColumnModelEvent e) {
+//                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                    }
+//
+//                    @Override
+//                    public void columnMoved(TableColumnModelEvent e) {
+//                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                    }
+//
+//                    @Override
+//                    public void columnMarginChanged(ChangeEvent e) {
+//                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//                    }
+//                };
             }
         });
     }
@@ -385,11 +559,14 @@ public class EmailClient extends javax.swing.JFrame {
     private javax.swing.JButton DraftBtn;
     private javax.swing.JButton InboxBtn;
     private javax.swing.JButton KirimBtn;
-    private java.awt.TextArea MsgArea;
+    private final java.awt.TextArea MsgArea = new java.awt.TextArea();
     private javax.swing.JTable MsgTable;
+    private javax.swing.JButton PublikBtn;
     private javax.swing.JButton SPAMBtn;
     private javax.swing.JButton SentBtn;
     private javax.swing.JButton jButton6;
+    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

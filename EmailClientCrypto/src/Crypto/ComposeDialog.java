@@ -14,9 +14,21 @@ public class ComposeDialog extends javax.swing.JDialog {
      * Creates new form ComposeDialog
      */
     public ComposeDialog(Frame parent) {
-        super(parent);
+        super(parent, true);
         setLocation (320,100);
+        setTitle("Compose Email");
         initComponents();
+    }
+    
+    private void actionConnect() {
+        if (ToField.getText().trim().length() < 1){
+            JOptionPane.showMessageDialog(this,
+                    "Mohon isikan alamat penerima email",
+                    "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Close dialog.
+        dispose();
     }
     
     public String getRecipient() {
@@ -48,6 +60,8 @@ public class ComposeDialog extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         ContentArea = new javax.swing.JTextArea();
         ComposeBtn = new javax.swing.JButton();
+        EncryptBox = new javax.swing.JCheckBox();
+        DigitalSignBox = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -72,15 +86,21 @@ public class ComposeDialog extends javax.swing.JDialog {
             }
         });
 
+        EncryptBox.setText("Enkripsi Pesan");
+
+        DigitalSignBox.setText("Pasang Tanda Tangan Digital");
+        DigitalSignBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DigitalSignBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 32, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -93,7 +113,15 @@ public class ComposeDialog extends javax.swing.JDialog {
                             .addComponent(ToField)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 25, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(EncryptBox)
+                                .addGap(18, 18, 18)
+                                .addComponent(DigitalSignBox))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
@@ -112,17 +140,34 @@ public class ComposeDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(EncryptBox)
+                    .addComponent(DigitalSignBox))
+                .addGap(18, 18, 18)
                 .addComponent(ComposeBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addGap(24, 24, 24))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void ComposeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComposeBtnActionPerformed
-        dispose();
+        actionConnect();
     }//GEN-LAST:event_ComposeBtnActionPerformed
 
+    String bigInteger;
+    
+    // CheckBox Digital Signature
+    private void DigitalSignBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DigitalSignBoxActionPerformed
+        KunciPrivatDialog dialog = new KunciPrivatDialog(this);
+        dialog.show();
+        bigInteger = dialog.getPrivatKey();
+    }//GEN-LAST:event_DigitalSignBoxActionPerformed
+
+    public String getPrivat() {
+        return bigInteger;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -130,6 +175,8 @@ public class ComposeDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ComposeBtn;
     private javax.swing.JTextArea ContentArea;
+    private javax.swing.JCheckBox DigitalSignBox;
+    private javax.swing.JCheckBox EncryptBox;
     private javax.swing.JTextField SubjectField;
     private javax.swing.JTextField ToField;
     private javax.swing.JLabel jLabel1;

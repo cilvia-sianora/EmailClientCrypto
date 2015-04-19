@@ -61,6 +61,7 @@ public class SendGmail {
             System.out.println("Sending message...");
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            System.out.println("Sent!");
         }
         catch (AddressException ae) {
             ae.printStackTrace();
