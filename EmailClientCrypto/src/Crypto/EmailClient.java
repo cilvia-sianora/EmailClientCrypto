@@ -58,6 +58,8 @@ public class EmailClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList();
         jScrollPane1 = new javax.swing.JScrollPane();
         MsgTable = new javax.swing.JTable();
         MsgArea = new java.awt.TextArea();
@@ -67,6 +69,13 @@ public class EmailClient extends javax.swing.JFrame {
         DraftBtn = new javax.swing.JButton();
         SPAMBtn = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+
+        jList1.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane2.setViewportView(jList1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -409,6 +418,8 @@ public class EmailClient extends javax.swing.JFrame {
     private javax.swing.JButton SPAMBtn;
     private javax.swing.JButton SentBtn;
     private javax.swing.JButton jButton6;
+    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
