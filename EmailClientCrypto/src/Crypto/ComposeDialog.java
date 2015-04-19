@@ -22,6 +22,7 @@ public class ComposeDialog extends javax.swing.JDialog {
         setLocation (320,100);
         setTitle("Compose Email");
         initComponents();
+        ecdsa = new ECDSA();
     }
     
     private void actionConnect() {
@@ -179,7 +180,7 @@ public class ComposeDialog extends javax.swing.JDialog {
             ecdsa.setdA(dialog.getPrivatKey());
             ecdsa.generatePubKey();
             String sign = ecdsa.signingMessage(ContentArea.getText());
-            ContentArea.setText(ContentArea.getText() + "<<" + sign + ">>");
+            ContentArea.setText(ContentArea.getText() + "\n\n<<" + sign + ">>");
         } catch (IOException ex) {
             Logger.getLogger(ComposeDialog.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
