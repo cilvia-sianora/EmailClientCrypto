@@ -6,13 +6,16 @@
 
 package Crypto;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.swing.SwingUtilities;
@@ -58,25 +61,27 @@ public class EmailClient extends javax.swing.JFrame {
         FillMsgArea(true);
         
         MsgTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public String toString(Message message) throws MessagingException, IOException {
-                Object content=message.getContent();
-                if (content instanceof MimeMultipart) {
-                    MimeMultipart multipart=(MimeMultipart)content;
-                    if (multipart.getCount() > 0) {
-                      BodyPart part=multipart.getBodyPart(0);
-                      content=part.getContent();
-                    }
-                }
-                if (content != null) {
-                    return content.toString();
-                }
-                else
-                    return "Selain text, isi pesan tidak dapat ditampilkan";
-            }
+//            public String toString(Message message) throws MessagingException, IOException {
+//                Object content=message.getContent();
+//                if (content instanceof MimeMultipart) {
+//                    MimeMultipart multipart=(MimeMultipart)content;
+//                    if (multipart.getCount() > 0) {
+//                      BodyPart part=multipart.getBodyPart(0);
+//                      content=part.getContent();
+//                    }
+//                }
+//                if (content != null) {
+//                    return content.toString();
+//                }
+//                else
+//                    return "Selain text, isi pesan tidak dapat ditampilkan";
+//            }
             public void valueChanged(ListSelectionEvent e) {
                 int row = MsgTable.getSelectedRow();
                 MsgArea.setText("");
+                System.out.println("sebelum try");
                 try {
+                    System.out.println("sesudah try");
 //                    if(MR.getMessages()[row-1] instanceof MimeMessage)
 //                    {
 //                        MimeMessage m = (MimeMessage)MR.getMessages()[row-1];
@@ -121,8 +126,41 @@ public class EmailClient extends javax.swing.JFrame {
 //                            result = null;
 //                        }
 //                    }
-                    String content = toString(MR.getMessages()[row-1]);
-                    MsgArea.setText(content);
+//                    String content = toString(MR.getMessages()[row]);
+                    MsgArea.setText("tes lalala");
+                    int idx = MR.getMessages().length - 1 - row;
+                    System.out.println(MR.getMessages()[idx].getSubject());
+//                    String content = (String) MR.getMessages()[idx].getContent();
+                    Object content =  MR.getMessages()[idx].getContent();
+                    
+                    
+                    
+//                    Part messagePart = MR.getMessages()[idx];
+//                    Object content = messagePart.getContent();
+//                    BufferedReader reader=new BufferedReader(new InputStreamReader(messagePart.getInputStream()));
+//                    System.out.println("isi reader: "+reader.toString());
+                    
+                    // Grab the body content text
+                    if ( content instanceof String ) {
+                        System.out.println("masuk content STRING");
+                        String body = (String) content;
+                        System.out.println("isi content: "+body);
+                        MsgArea.setText(body);
+                    }
+                    else if (content instanceof Multipart){
+                        System.out.println("masuk content MULTIPART");
+                        Multipart mp = (Multipart)content;
+                        Part part = null;
+                        for (int i =0; i<mp.getCount(); i++) {
+                            part = mp.getBodyPart(i);
+                            if (part.isMimeType("text/plain")) {
+//                                System.out.println("isi content: "+mp.toString());
+                                MsgArea.setText((String)part.getContent());
+                            }
+                        }
+                    }
+                    //MsgArea.setText("tes");
+                    
 //                    if (MR.getMessages()[row-1].getContentType() == "TEXT/PLAIN; charset=UTF-8") {
 //                        String content = toString(MR.getMessages()[row-1]);
 //                        MsgArea.setText(content);
@@ -148,8 +186,6 @@ public class EmailClient extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
         jScrollPane1 = new javax.swing.JScrollPane();
         MsgTable = new javax.swing.JTable();
         KirimBtn = new javax.swing.JButton();
@@ -159,13 +195,7 @@ public class EmailClient extends javax.swing.JFrame {
         SPAMBtn = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         PublikBtn = new javax.swing.JButton();
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jScrollPane2.setViewportView(jList1);
+        DekripsiBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -324,11 +354,9 @@ public class EmailClient extends javax.swing.JFrame {
 
         PublikBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         PublikBtn.setText("Verifikasi Email");
-        PublikBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PublikBtnActionPerformed(evt);
-            }
-        });
+
+        DekripsiBtn.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        DekripsiBtn.setText("Dekripsi Pesan");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -343,7 +371,8 @@ public class EmailClient extends javax.swing.JFrame {
                     .addComponent(DraftBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(SPAMBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PublikBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(PublikBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(DekripsiBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(MsgArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -367,11 +396,13 @@ public class EmailClient extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SPAMBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(MsgArea, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(PublikBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(PublikBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(DekripsiBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
@@ -556,6 +587,7 @@ public class EmailClient extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton DekripsiBtn;
     private javax.swing.JButton DraftBtn;
     private javax.swing.JButton InboxBtn;
     private javax.swing.JButton KirimBtn;
@@ -565,8 +597,6 @@ public class EmailClient extends javax.swing.JFrame {
     private javax.swing.JButton SPAMBtn;
     private javax.swing.JButton SentBtn;
     private javax.swing.JButton jButton6;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }
