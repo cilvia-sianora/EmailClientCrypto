@@ -33,6 +33,11 @@ public class ECDSA {
         dA = randomBigInteger(n.subtract(BigInteger.ONE));
         QA = G.multiplication(this.dA);        
     }
+    
+     //Generate public key
+    public void generatePubKey(){
+        QA = G.multiplication(this.dA);
+    }
 
     //Getter for attribute QA
     public Point getQA() {

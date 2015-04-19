@@ -146,6 +146,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Enkripsi Pesan"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EncryptBoxActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="DigitalSignBox">
       <Properties>

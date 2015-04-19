@@ -457,6 +457,7 @@ public class EmailClient extends javax.swing.JFrame {
         content = dialog.getContent();
         SendGmail SG = new SendGmail();
         String[] to = {recipient};
+        SG.KEY = dialog.key;
         SG.sendFromGMail(username, password, to, subject, content);
     }//GEN-LAST:event_KirimBtnActionPerformed
 

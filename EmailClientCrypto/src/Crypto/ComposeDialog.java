@@ -1,7 +1,11 @@
 package Crypto;
 
+import ecdsa.ECDSA;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 /**
@@ -9,7 +13,7 @@ import javax.swing.*;
  * @author Andarias Silvanus
  */
 public class ComposeDialog extends javax.swing.JDialog {
-
+    private ECDSA ecdsa;
     /**
      * Creates new form ComposeDialog
      */
@@ -87,6 +91,11 @@ public class ComposeDialog extends javax.swing.JDialog {
         });
 
         EncryptBox.setText("Enkripsi Pesan");
+        EncryptBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EncryptBoxActionPerformed(evt);
+            }
+        });
 
         DigitalSignBox.setText("Pasang Tanda Tangan Digital");
         DigitalSignBox.addActionListener(new java.awt.event.ActionListener() {
@@ -155,19 +164,37 @@ public class ComposeDialog extends javax.swing.JDialog {
         actionConnect();
     }//GEN-LAST:event_ComposeBtnActionPerformed
 
-    String bigInteger;
-    
     // CheckBox Digital Signature
     private void DigitalSignBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DigitalSignBoxActionPerformed
-        KunciPrivatDialog dialog = new KunciPrivatDialog(this);
-        dialog.show();
-        bigInteger = dialog.getPrivatKey();
+        if (ContentArea.getText().trim().length() < 1){
+            JOptionPane.showMessageDialog(this,
+                    "Mohon isikan pesan Anda",
+                    "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        KunciPrivatDialog dialog;
+        try {
+            dialog = new KunciPrivatDialog(this);
+            dialog.show();
+            ecdsa.setdA(dialog.getPrivatKey());
+            ecdsa.generatePubKey();
+            String sign = ecdsa.signingMessage(ContentArea.getText());
+            ContentArea.setText(ContentArea.getText() + "<<" + sign + ">>");
+        } catch (IOException ex) {
+            Logger.getLogger(ComposeDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ComposeDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_DigitalSignBoxActionPerformed
+    public String key;
+    private void EncryptBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EncryptBoxActionPerformed
+        // TODO add your handling code here:
+        KunciEnkripsiDialog dialog = new KunciEnkripsiDialog(this);
+        dialog.show();
+        key = dialog.getKey();
+    }//GEN-LAST:event_EncryptBoxActionPerformed
 
-    public String getPrivat() {
-        return bigInteger;
-    }
-    
+
     /**
      * @param args the command line arguments
      */

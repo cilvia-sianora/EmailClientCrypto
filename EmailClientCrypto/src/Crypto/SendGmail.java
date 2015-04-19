@@ -5,6 +5,7 @@ package Crypto;
  * @author Andarias Silvanus
  */
 
+import CipherBlock.Kristik;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -14,7 +15,7 @@ public class SendGmail {
     private static String USER_NAME = "your_accout";  // GMail user name (just the part before "@gmail.com")
     private static String PASSWORD = "your_password"; // GMail password
     private static String RECIPIENT = "recipient@recipient.com";
-
+    public static String KEY = "";
     public static void main(String[] args) {
         String from = USER_NAME;
         String pass = PASSWORD;
@@ -39,7 +40,6 @@ public class SendGmail {
         
         Session session = Session.getDefaultInstance(props);
         MimeMessage message = new MimeMessage(session);
-        
         try {
             message.setFrom(new InternetAddress(from));
             InternetAddress[] toAddress = new InternetAddress[to.length];
@@ -54,6 +54,11 @@ public class SendGmail {
             }
             
             message.setSubject(subject);
+            if (KEY != ""){
+                Kristik cipher = new Kristik();
+                cipher.setKey(KEY);
+                body = cipher.encECB(body);
+            }
             message.setText(body);
             Transport transport = session.getTransport("smtp");
             System.out.println("Connecting to host...");

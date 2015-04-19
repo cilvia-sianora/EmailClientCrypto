@@ -14,46 +14,32 @@ import javax.swing.*;
  *
  * @author Andarias Silvanus
  */
-public class KunciPrivatDialog extends javax.swing.JDialog {
-    private BigInteger privateKey;
+public class KunciEnkripsiDialog extends javax.swing.JDialog {
+    private String key = "";
     /**
      * Creates new form KunciPrivatDialog
      */
-    public KunciPrivatDialog(Dialog parent) throws IOException {
+    public KunciEnkripsiDialog(Dialog parent) {
         super(parent, true);
         setLocation (320,100);
-        setTitle("Input Kunci Privat");
+        setTitle("Input String Kunci Enkripsi");
         initComponents();
-        File f = new File(".pri");
-        if(f.exists() && !f.isDirectory()) {
-            readPrivateKey();
-            PrivatField.setText(privateKey.toString());
-        }
     }
     
     private void actionConnect() {
-        if (PrivatField.getText().trim().length() < 1){
+        if (KeyField.getText().trim().length() < 1){
             JOptionPane.showMessageDialog(this,
-                    "Mohon isikan kunci privat",
+                    "Mohon isikan kunci enkripsi",
                     "Missing Setting(s)", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        privateKey = new BigInteger(PrivatField.getText());
+        key = KeyField.getText();
         // Close dialog.
         dispose();
     }
     
-    public BigInteger getPrivatKey() {
-        System.out.println(privateKey);
-        return privateKey;
-    }
-    
-    //Read private key from .pri file
-    private void readPrivateKey() throws IOException{
-        String file = ".pri";
-        Path path = Paths.get(file);
-        byte[] bytes = Files.readAllBytes(path);
-        privateKey = new BigInteger(bytes);
+    public String getKey() {
+        return key;
     }
 
     /**
@@ -65,7 +51,7 @@ public class KunciPrivatDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PrivatField = new javax.swing.JTextField();
+        KeyField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         SubmitBtn = new javax.swing.JButton();
 
@@ -92,7 +78,7 @@ public class KunciPrivatDialog extends javax.swing.JDialog {
                     .addComponent(SubmitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1)
-                        .addComponent(PrivatField, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(KeyField, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -101,7 +87,7 @@ public class KunciPrivatDialog extends javax.swing.JDialog {
                 .addGap(41, 41, 41)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(PrivatField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(KeyField, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(SubmitBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addGap(25, 25, 25))
@@ -119,7 +105,7 @@ public class KunciPrivatDialog extends javax.swing.JDialog {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField PrivatField;
+    private javax.swing.JTextField KeyField;
     private javax.swing.JButton SubmitBtn;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
