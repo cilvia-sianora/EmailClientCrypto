@@ -62,113 +62,15 @@ public class EmailClient extends javax.swing.JFrame {
         FillMsgArea(true);
         
         MsgTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-//            public String toString(Message message) throws MessagingException, IOException {
-//                Object content=message.getContent();
-//                if (content instanceof MimeMultipart) {
-//                    MimeMultipart multipart=(MimeMultipart)content;
-//                    if (multipart.getCount() > 0) {
-//                      BodyPart part=multipart.getBodyPart(0);
-//                      content=part.getContent();
-//                    }
-//                }
-//                if (content != null) {
-//                    return content.toString();
-//                }
-//                else
-//                    return "Selain text, isi pesan tidak dapat ditampilkan";
-//            }
             public void valueChanged(ListSelectionEvent e) {
                 int row = MsgTable.getSelectedRow();
                 MsgArea.setText("");
-                System.out.println("sebelum try");
                 try {
-                    System.out.println("sesudah try");
-//                    if(MR.getMessages()[row-1] instanceof MimeMessage)
-//                    {
-//                        MimeMessage m = (MimeMessage)MR.getMessages()[row-1];
-//                        Object contentObject = m.getContent();
-//                        if(contentObject instanceof Multipart)
-//                        {
-//                            BodyPart clearTextPart = null;
-//                            BodyPart htmlTextPart = null;
-//                            Multipart content = (Multipart)contentObject;
-//                            int count = content.getCount();
-//                            for(int i=0; i<count; i++)
-//                            {
-//                                BodyPart part =  content.getBodyPart(i);
-//                                if(part.isMimeType("text/plain"))
-//                                {
-//                                    clearTextPart = part;
-//                                    break;
-//                                }
-//                                else if(part.isMimeType("text/html"))
-//                                {
-//                                    htmlTextPart = part;
-//                                }
-//                            }
-//                            if(clearTextPart!=null)
-//                            {
-//                                result = (String) clearTextPart.getContent();
-//                            }
-//                            else if (htmlTextPart!=null)
-//                            {
-//                                String html = (String) htmlTextPart.getContent();
-//                                result = Jsoup.parse(html).text();
-//                            }
-//
-//                        }
-//                         else if (contentObject instanceof String) // a simple text message
-//                        {
-//                            result = (String) contentObject;
-//                        }
-//                        else // not a mime message
-//                        {
-//                            logger.log(Level.WARNING,"notme part or multipart {0}",message.toString());
-//                            result = null;
-//                        }
-//                    }
-//                    String content = toString(MR.getMessages()[row]);
-                    MsgArea.setText("tes lalala");
                     int idx = MR.getMessages().length - 1 - row;
                     System.out.println(MR.getMessages()[idx].getSubject());
-//                    String content = (String) MR.getMessages()[idx].getContent();
-                    Object content =  MR.getMessages()[idx].getContent();
+                    String content = MR.getMessages()[idx].getContent().toString();
+                    MsgArea.setText(content);
                     
-                    
-                    
-//                    Part messagePart = MR.getMessages()[idx];
-//                    Object content = messagePart.getContent();
-//                    BufferedReader reader=new BufferedReader(new InputStreamReader(messagePart.getInputStream()));
-//                    System.out.println("isi reader: "+reader.toString());
-                    
-                    // Grab the body content text
-                    if ( content instanceof String ) {
-                        System.out.println("masuk content STRING");
-                        String body = (String) content;
-                        System.out.println("isi content: "+body);
-                        MsgArea.setText(body);
-                    }
-                    else if (content instanceof Multipart){
-                        System.out.println("masuk content MULTIPART");
-                        Multipart mp = (Multipart)content;
-                        Part part = null;
-                        for (int i =0; i<mp.getCount(); i++) {
-                            part = mp.getBodyPart(i);
-                            if (part.isMimeType("text/plain")) {
-//                                System.out.println("isi content: "+mp.toString());
-                                MsgArea.setText((String)part.getContent());
-                            }
-                        }
-                    }
-                    //MsgArea.setText("tes");
-                    
-//                    if (MR.getMessages()[row-1].getContentType() == "TEXT/PLAIN; charset=UTF-8") {
-//                        String content = toString(MR.getMessages()[row-1]);
-//                        MsgArea.setText(content);
-//                    }
-//                    else
-//                        MsgArea.setText("Selain text, isi pesan tidak dapat ditampilkan");
-//                    System.out.println(MR.getMessages()[row-1].getContentType());
                 } catch (MessagingException ex) {
                     Logger.getLogger(EmailClient.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {

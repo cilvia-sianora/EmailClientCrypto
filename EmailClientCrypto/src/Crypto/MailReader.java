@@ -57,8 +57,8 @@ public class MailReader
            try
            {
                //printAllMessages(messages);
-               inbox.close(true);
-               store.close();
+//               inbox.close(true);
+//               store.close();
            }
            catch (Exception ex)
            {
@@ -165,8 +165,8 @@ public class MailReader
             try
             {
  //               printAllMessages(messages);
-                inbox.close(true);
-                store.close();
+//                inbox.close(true);
+//                store.close();
             }
             catch (Exception ex)
             {

@@ -22,6 +22,7 @@ public class ComposeDialog extends javax.swing.JDialog {
         setLocation (320,100);
         setTitle("Compose Email");
         initComponents();
+        ecdsa = new ECDSA();
     }
     
     private void actionConnect() {
