@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<<<<<<< HEAD
   <NonVisualComponents>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
       <AuxValues>
@@ -25,6 +26,8 @@
       </SubComponents>
     </Container>
   </NonVisualComponents>
+=======
+>>>>>>> origin/master
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -138,6 +141,9 @@
       </SubComponents>
     </Container>
     <Component class="java.awt.TextArea" name="MsgArea">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="18"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="KirimBtn">
       <Properties>

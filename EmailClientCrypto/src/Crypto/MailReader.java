@@ -271,7 +271,7 @@ public class MailReader
     public static void main(String args[])
     {
        //new MailReader();         
-        MailReader MR = new MailReader("asilvanus5", "ain't venus");
+        MailReader MR = new MailReader("username", "password");
         MR.ReadFolder(4);
     }
 }
