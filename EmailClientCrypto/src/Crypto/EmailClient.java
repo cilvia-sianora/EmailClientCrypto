@@ -380,6 +380,7 @@ public class EmailClient extends javax.swing.JFrame {
         KunciDekripsiDialog dialog = new KunciDekripsiDialog(this);
         dialog.show();
         Kristik decipher = new Kristik();
+        System.out.println("Key dekripsi= " + dialog.getKey());
         decipher.setKey(dialog.getKey());
         MsgArea.setText(decipher.decECB(MsgArea.getText()));
     }//GEN-LAST:event_DekripsiBtnActionPerformed
@@ -393,7 +394,9 @@ public class EmailClient extends javax.swing.JFrame {
         String message = MsgArea.getText().substring(0, MsgArea.getText().indexOf("<<")-4);
         System.out.println(message);
         System.out.println(signature);
-        signature = signature.substring(2);
+        int found = signature.indexOf('ÿ');
+        System.out.println(found);
+        signature = signature.substring(2, found);
         System.out.println(signature);
         boolean verify = false;
         verify = ecdsa.checkSignature(message, signature);

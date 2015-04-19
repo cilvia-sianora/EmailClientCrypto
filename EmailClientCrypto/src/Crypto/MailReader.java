@@ -267,11 +267,4 @@ public class MailReader
            System.out.write(c);
        }
     }
-
-    public static void main(String args[])
-    {
-       //new MailReader();         
-        MailReader MR = new MailReader("username", "password");
-        MR.ReadFolder(4);
-    }
 }

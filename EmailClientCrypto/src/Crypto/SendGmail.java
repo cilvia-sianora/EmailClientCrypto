@@ -16,16 +16,16 @@ public class SendGmail {
     private static String PASSWORD = "your_password"; // GMail password
     private static String RECIPIENT = "recipient@recipient.com";
     public static String KEY = "";
-    public static void main(String[] args) {
-        String from = USER_NAME;
-        String pass = PASSWORD;
-        String[] to = { RECIPIENT }; // list of recipient email addresses
-        String subject = "Java send mail example";
-        String body = "Welcome to JavaMail!";
-        System.out.println("Waiting to Send...");
-        sendFromGMail(from, pass, to, subject, body);
-        System.out.println("Sent!");
-    }
+//    public static void main(String[] args) {
+//        String from = USER_NAME;
+//        String pass = PASSWORD;
+//        String[] to = { RECIPIENT }; // list of recipient email addresses
+//        String subject = "Java send mail example";
+//        String body = "Welcome to JavaMail!";
+//        System.out.println("Waiting to Send...");
+//        sendFromGMail(from, pass, to, subject, body);
+//        System.out.println("Sent!");
+//    }
 
     static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
         Properties props = System.getProperties();
@@ -55,10 +55,10 @@ public class SendGmail {
             
             message.setSubject(subject);
             if (KEY != ""){
-                System.out.println(KEY);
+                System.out.println("Key enkripsi= " + KEY);
                 Kristik cipher = new Kristik();
                 cipher.setKey(KEY);
-                body = cipher.encCBC(body);
+                body = cipher.encECB(body);
             }
             message.setText(body);
             Transport transport = session.getTransport("smtp");
