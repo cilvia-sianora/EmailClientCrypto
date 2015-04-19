@@ -396,7 +396,11 @@ public class EmailClient extends javax.swing.JFrame {
         System.out.println(signature);
         int found = signature.indexOf('ÿ');
         System.out.println(found);
-        signature = signature.substring(2, found);
+        if (found != -1){ 
+            signature = signature.substring(2, found);
+        } else {
+            signature = signature.substring(2);
+        }
         System.out.println(signature);
         boolean verify = false;
         verify = ecdsa.checkSignature(message, signature);
